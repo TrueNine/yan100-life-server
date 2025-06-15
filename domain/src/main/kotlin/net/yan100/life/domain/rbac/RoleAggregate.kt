@@ -1,0 +1,58 @@
+package net.yan100.life.domain.rbac
+
+import net.yan100.life.domain.AggregateId
+import net.yan100.life.domain.AggregateRoot
+import net.yan100.life.domain.DomainEvent
+
+/**
+ * 角色聚合根
+ */
+class RoleAggregate(
+  override var id: AggregateId,
+  var code: String, // 角色唯一标识
+  var name: String, // 角色名称
+  var description: String? = null,
+  private val permissionIds: MutableSet<AggregateId> = mutableSetOf()
+) : AggregateRoot(id) {
+  companion object {
+    fun create(code: String, name: String, description: String? = null): RoleAggregate {
+      val id = AggregateId.create()
+      val role = RoleAggregate(id, code, name, description)
+      role.raiseEvent(RoleCreatedEvent(id, code, name))
+      return role
+    }
+  }
+
+  fun addPermission(permissionId: AggregateId) {
+    if (permissionIds.add(permissionId)) {
+      raiseEvent(RolePermissionAddedEvent(id, permissionId))
+    }
+  }
+
+  fun removePermission(permissionId: AggregateId) {
+    if (permissionIds.remove(permissionId)) {
+      raiseEvent(RolePermissionRemovedEvent(id, permissionId))
+    }
+  }
+
+  fun getPermissionIds(): Set<AggregateId> = permissionIds.toSet()
+}
+
+/** 角色创建事件 */
+data class RoleCreatedEvent(
+  override val aggregateId: AggregateId,
+  val code: String,
+  val name: String
+) : DomainEvent(aggregateId = aggregateId)
+
+/** 角色添加权限事件 */
+data class RolePermissionAddedEvent(
+  override val aggregateId: AggregateId,
+  val permissionId: AggregateId
+) : DomainEvent(aggregateId = aggregateId)
+
+/** 角色移除权限事件 */
+data class RolePermissionRemovedEvent(
+  override val aggregateId: AggregateId,
+  val permissionId: AggregateId
+) : DomainEvent(aggregateId = aggregateId) 
