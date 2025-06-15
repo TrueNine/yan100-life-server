@@ -12,22 +12,9 @@ Yan100-Life 是一款专注于当地垂直领域的社交软件后端服务，�
 
 - **语言**：Kotlin
 - **JVM底座**：Java 24
-- **框架**：Spring Boot 3.x
+- **框架**：Spring Boot 3.5
 - **构建工具**：Gradle
 - **数据库访问**：Jimmer ORM
-- **AI 能力**：LangChain4j
-- **架构设计**：DDD (领域驱动设计) + CQRS (命令查询职责分离)
-
-## 项目结构
-
-```
-yan100-life-server/
-├── application/      # 应用层，处理用户请求和用例实现
-├── domain/           # 领域层，核心业务逻辑和领域模型
-├── infrastructure/   # 基础设施层，技术实现和外部服务集成
-├── interfaces/       # 接口层，API 定义和控制器
-└── common/           # 通用模块，工具类和通用功能
-```
 
 ## 架构设计
 
@@ -46,40 +33,6 @@ yan100-life-server/
 - Gradle 8.x
 - Docker (推荐用于开发环境)
 
-### 本地开发
-
-1. 克隆仓库
-   ```bash
-   git clone https://github.com/your-org/yan100-life-server.git
-   cd yan100-life-server
-   ```
-
-2. 启动开发环境
-   ```bash
-   ./gradlew bootRun
-   ```
-
-3. 运行测试
-   ```bash
-   ./gradlew test
-   ```
-
-## AI 能力
-
-本项目集成 LangChain4j 作为 AI 底座，提供以下能力：
-
-- 内容生成和推荐
-- 用户行为分析
-- 智能客服支持
-- 社区内容审核
-
-## 贡献指南
-
-1. 遵循测试驱动开发(TDD)原则
-2. 提交前确保所有测试通过
-3. 遵循代码规范和提交消息规范
-4. 提交合并请求前进行代码自审
-
 ## 许可证
 
-[添加您的许可证信息] 
+[LGPL-2.1](/LICENSE)
