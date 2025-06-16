@@ -3,7 +3,7 @@ package net.yan100.life.domain
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-
+  
 
 class DomainEventPublisherTest {
     @Test
