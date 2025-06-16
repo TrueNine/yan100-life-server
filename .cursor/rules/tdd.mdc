@@ -1,6 +1,6 @@
 ---
 description: 单元测试规则
-globs:
+globs: **/src/test/kotlin/**/*Test.kt
 alwaysApply: false
 ---
 
@@ -10,3 +10,34 @@ alwaysApply: false
 - spring mockMvc 编写时应当使用 kotlin 扩展，而非 java 形式语法，以提高测试代码简洁度
 - 每个被测试函数，应当使用分组测试
 - 应当使用参数化测试来优化测试代码，保持代码简洁
+- 禁止使用 `@DisplayName`，测试方法名使用中文书写即可
+
+单元测试代码规则：
+- 禁止使用 junit5 当中的 `Assertions.xxx` 断言函数，应当更具有kotlin风味
+- 应当使用 `kotlin.test` 库 当中的断言函数
+
+## 测试代码分组格式示例
+
+```kotlin
+// 被测试对象
+class UserService {
+  fun getUser() {/*...*/ }
+  fun saveUser() {/*...*/}
+}
+
+// 测试类
+class UserServiceTest {
+  @Nested
+  inner class GetUser {
+    @Test
+    fun `正常 获取用户信息`() {}
+    @Test
+    fun `异常 获取用户信息`() {}
+    // ...
+  }
+  @Nested
+  inner class SaveUser {
+    // 测试代码
+  }
+}
+```
