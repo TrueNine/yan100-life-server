@@ -1,0 +1,8 @@
+---
+description: 注释规则
+globs: 
+alwaysApply: false
+---
+
+- 不允许使用行尾注释
+- 必须使用英文的 doc 注释

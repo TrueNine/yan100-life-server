@@ -3,3 +3,6 @@ description: 单元测试规则
 globs:
 alwaysApply: false
 ---
+
+- 测试覆盖率必须100%
+- 测试与源文件同名+Test后缀

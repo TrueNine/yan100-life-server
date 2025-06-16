@@ -1,0 +1,37 @@
+---
+description: 编码规则
+globs: 
+alwaysApply: true
+---
+
+- 代码嵌套层级不宜深入，应积极使用 `early return` 技巧， 提前结束来避免嵌套。
+
+kotlin 代码优化：
+- 无需值使，应当使用 `also {}` 而非 `let {}`
+
+JSR规则：
+- 禁止使用 spring 注解，应尽量使用 JSR 规范的注解
+- 推荐使用 `@Resource`,`@Resources`,`@Inject` 替代 `@Autowired`
+
+日志规则：
+日志引入示例：应当使用 `slf4j` 函数来获取静态日志实例
+```kotlin
+import net.yan100.compose.slf4j
+
+class Example {
+  companion object {
+    @JvmStatic
+    private val log = slf4j<Example>()
+  }
+}
+```
+
+日志记录规则：
+- 禁止使用 `println`
+- 记录格式 `[methodName] message args1: {} , args2: {} ...`
+```kotlin
+log.trace("[changeName] changed name and age name: {} , age: {}", name, age)
+```
+- 记录消息应当使用 `{}` 占位符
+- 日志信息必须使用英文书写
+
