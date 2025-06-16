@@ -69,8 +69,3 @@ src/test/**/out/
 logs
 .logs
 *.log
-
-### AI Coding ###
-.cursorrules
-/.cursor
-.cursorignore
