@@ -52,7 +52,7 @@ spotless {
 fun loadDotenv(): Map<String, String> {
   val dotenvPath = project.findProperty("dotenv")?.toString()
   if (dotenvPath.isNullOrBlank()) {
-    logger.warn("[dotenv] gradle.properties 未配置 dotenvFile 属性，未加载 .env 文件")
+    logger.warn("[dotenv] gradle.properties 未配置 dotenv 属性，未加载 .env 文件")
     return emptyMap()
   }
   val envFile = file(dotenvPath)

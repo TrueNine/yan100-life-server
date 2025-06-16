@@ -4,8 +4,8 @@ plugins {
   alias(yan100.plugins.org.jetbrains.kotlin.kapt)
   alias(yan100.plugins.com.google.devtools.ksp)
   alias(yan100.plugins.org.jetbrains.kotlin.plugin.spring)
-  `repositories-conventions`
   `jacoco-convention`
+  `repositories-conventions`
 }
 
 dependencies {

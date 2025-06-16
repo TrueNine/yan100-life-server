@@ -20,7 +20,7 @@ dependencies {
 
   runtimeOnly(yan100.org.springframework.data.spring.data.commons)
   runtimeOnly(yan100.org.springframework.spring.jdbc)
-  runtimeOnly(projects.infrastructure.infrastructureJimmer)
+  runtimeOnly(projects.infrastructure.jimmer)
 
   ksp(yan100.org.babyfish.jimmer.jimmer.ksp)
 
