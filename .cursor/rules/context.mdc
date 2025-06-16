@@ -4,4 +4,5 @@ globs:
 alwaysApply: true
 ---
 
+- 应当尽可能复用现有项目已有代码，避免重复造轮子
 - 积极使用 MCP context7 工具查阅最新文档
