@@ -21,6 +21,6 @@ class JimmerClientApiIntegrationTest @Inject constructor(
         status {
           isOk()
         }
-      }v
+      }
   }
 } 
