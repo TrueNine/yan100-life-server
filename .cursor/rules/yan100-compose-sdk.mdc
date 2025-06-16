@@ -1,0 +1,61 @@
+---
+description: compose sdk 文档
+globs: 
+alwaysApply: false
+---
+
+## RefId
+它是一个 kotlin 的别名，通常用以指代数据库的 Id 类型，方便在sdk方强制用户使用统一的 Id 类型
+在数据库相关函数中应当优先使用它，而非特定类型，提升可移植性。
+### 定义：
+```kotlin
+package net.yan100.compose
+
+typealias RefId = Long
+// or
+typealias RefId = Int
+// or
+typealias RefId = String
+```
+### 禁忌：
+- 不应出现在 mvc 中的 controller 层，ddd 当中的 application 层之外。
+- 应当出现在 mvc 中的 service、repository 层，ddd 当中的 domain、 infrastructure 层。
+- 所有 `repository`、`entity` 层，都必须使用此 RefId 类型。
+
+### 辅助函数
+```kotlin
+package net.yan100.compose
+
+// 转换为 RefId
+fun String.toId(): RefId?
+fun Long.toId(): RefId?
+// 判断当前 id 是否合法且可以使用
+fun String.isId(): Boolean
+fun Long.isId(): Boolean
+fun RefId.isId(): Boolean
+```
+
+## slf4j 日志函数
+因在 kotlin 当中无如同 lombok 一样的 @Slf4j 注解，故用此函数作为替代。
+
+#### 定义：
+```kotlin
+package net.yan100.compose
+
+inline fun <T :Any> slf4j<T>(clazz: KClass<T>): Logger = LoggerFactory.getLogger(clazz.java)
+```
+### 使用
+```kotlin
+class Example {
+  companion object {
+    @JvmStatic
+    val log = slf4j<Example>()
+  }
+}
+// or
+object ExampleObject {
+  @JvmStatic
+  val log = slf4j<ExampleObject>()
+}
+```
+
