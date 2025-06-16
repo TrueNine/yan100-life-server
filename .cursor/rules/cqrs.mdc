@@ -1,0 +1,5 @@
+---
+description: CQRS 规则
+globs: 
+alwaysApply: false
+---
