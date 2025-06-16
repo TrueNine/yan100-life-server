@@ -9,8 +9,8 @@ import net.yan100.life.domain.DomainEvent
  */
 class RoleAggregate(
   override var id: AggregateId,
-  var code: String, // 角色唯一标识
-  var name: String, // 角色名称
+  var code: String,
+  var name: String,
   var description: String? = null,
   private val permissionIds: MutableSet<AggregateId> = mutableSetOf()
 ) : AggregateRoot(id) {
