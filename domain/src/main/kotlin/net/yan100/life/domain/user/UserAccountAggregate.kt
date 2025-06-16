@@ -18,6 +18,7 @@ class UserAccountAggregate(
 ) : AggregateRoot(id) {
 
   companion object {
+    @JvmStatic
     fun create(
       account: String,
       passwordEnc: String,
@@ -32,7 +33,9 @@ class UserAccountAggregate(
         nickName = nickName,
         phone = phone
       )
+      user.active(userId.toChangeId())
       user.raiseEvent(UserAccountCreatedEvent(userId, account, nickName))
+      user.raiseEvent(UserPermissionInitializedEvent(userId))
       return user
     }
   }
@@ -42,10 +45,10 @@ class UserAccountAggregate(
     phone: String? = null,
     avatarUrl: String? = null,
   ) {
-    val oldNickName = this.nickName
-    nickName?.let { this.nickName = it }
-    phone?.let { this.phone = it }
-    avatarUrl?.let { this.avatarUrl = it }
+    checkActivatedOrThrow()
+    nickName?.also { this.nickName = it }
+    phone?.also { this.phone = it }
+    avatarUrl?.also { this.avatarUrl = it }
 
     raiseEvent(
       UserProfileUpdatedEvent(
@@ -69,16 +72,16 @@ class UserAccountAggregate(
   }
 
   fun addFavoritePost(postId: AggregateId.Change) {
-    if (favoritePostContentIds.add(postId)) {
-      raiseEvent(PostFavoritedEvent(id.toChangeId(), postId.toChangeId()))
-    }
+    if (!favoritePostContentIds.add(postId)) return
+    raiseEvent(PostFavoritedEvent(id.toChangeId(), postId.toChangeId()))
   }
 
   fun removeFavoritePost(postId: AggregateId.Change) {
-    if (favoritePostContentIds.remove(postId)) {
-      raiseEvent(PostUnfavoritedEvent(id.toChangeId(), postId))
-    }
+    if (!favoritePostContentIds.remove(postId)) return
+    raiseEvent(PostUnfavoritedEvent(id.toChangeId(), postId))
   }
 
-  fun getFavoritePostIds(): Set<AggregateId> = favoritePostContentIds.toSet()
+  fun getFavoritePostIds(): Set<AggregateId> = checkActivatedOrThrow {
+    favoritePostContentIds.toSet()
+  }
 } 

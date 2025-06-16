@@ -14,28 +14,33 @@ class UserPermissionAggregate(
   private val roleGroupIds: MutableSet<AggregateId> = mutableSetOf(),
   private val revokedPermissionIds: MutableSet<AggregateId> = mutableSetOf(),
 ) : AggregateRoot(id) {
-  fun assignRoleGroup(roleGroupId: AggregateId) {
-    if (roleGroupIds.add(roleGroupId)) {
-      raiseEvent(UserRoleGroupAssignedEvent(id, roleGroupId))
+  companion object {
+    @JvmStatic
+    fun create(userId: AggregateId.Create): UserPermissionAggregate {
+      return UserPermissionAggregate(userId)
     }
+  }
+
+  fun assignRoleGroup(roleGroupId: AggregateId) {
+    if (!roleGroupIds.add(roleGroupId)) return
+    raiseEvent(UserRoleGroupAssignedEvent(id, roleGroupId))
   }
 
   fun removeRoleGroup(roleGroupId: AggregateId) {
-    if (roleGroupIds.remove(roleGroupId)) {
-      raiseEvent(UserRoleGroupRemovedEvent(id, roleGroupId))
-    }
+    if (roleGroupIds.remove(roleGroupId)) return
+    raiseEvent(UserRoleGroupRemovedEvent(id, roleGroupId))
   }
 
   fun revokePermission(permissionId: AggregateId) {
-    if (revokedPermissionIds.add(permissionId)) {
-      raiseEvent(UserPermissionRevokedEvent(id, permissionId))
-    }
+    if (!revokedPermissionIds.add(permissionId)) return
+    raiseEvent(UserPermissionRevokedEvent(id, permissionId))
   }
 
   fun restorePermission(permissionId: AggregateId) {
-    if (revokedPermissionIds.remove(permissionId)) {
-      raiseEvent(UserPermissionRestoredEvent(id, permissionId))
+    if (!revokedPermissionIds.remove(permissionId)) {
+      return
     }
+    raiseEvent(UserPermissionRestoredEvent(id, permissionId))
   }
 
   fun getRoleGroupIds(): Set<AggregateId> = roleGroupIds.toSet()

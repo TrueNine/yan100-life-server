@@ -51,4 +51,11 @@ data class PostFavoritedEvent(
 data class PostUnfavoritedEvent(
   override val aggregateId: AggregateId.Change,
   val postId: AggregateId.Change,
+) : DomainEvent(aggregateId = aggregateId)
+
+/**
+ * 用户权限初始化事件
+ */
+data class UserPermissionInitializedEvent(
+  override val aggregateId: AggregateId.Create,
 ) : DomainEvent(aggregateId = aggregateId) 

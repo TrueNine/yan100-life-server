@@ -20,20 +20,28 @@ abstract class TypedAggregateRoot<Id : AggregateId>(
   fun active(
     id: Id,
   ) {
-    check(id.activated) { "id is not activated" }
+    check(id.activated) { "id is not activated for $id" }
     this.id = id
   }
 
+  protected fun checkActivatedOrThrow() {
+    check(activated) { "aggregate is not activated for $this" }
+  }
+
+  protected fun <R : Any> checkActivatedOrThrow(provider: () -> R): R {
+    check(id.activated) { "id is not activated" }
+    return provider()
+  }
+
   protected fun raiseEvent(event: DomainEvent) {
-    log.debug("raise event: {}", event)
+    log.trace("raise event: {}", event)
     _domainEvents += event
   }
 
   fun clearEvents() {
-    log.trace("clear events")
+    log.trace("clear events for {}", this)
     _domainEvents.clear()
   }
-
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
