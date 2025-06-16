@@ -2,12 +2,16 @@ package net.yan100.life.infrastructure.jimmer.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.yan100.compose.Pq
+import net.yan100.compose.Pr
 import net.yan100.compose.RefId
+import net.yan100.compose.rds.entities.crd
+import net.yan100.compose.rds.fetchPq
+import net.yan100.life.domain.AggregateId
 import net.yan100.life.domain.content.PostContentAggregate
 import net.yan100.life.domain.content.PostContentRepository
 import net.yan100.life.domain.enums.PostContentStatus
 import net.yan100.life.domain.enums.PostMessageType
-import net.yan100.life.domain.AggregateId
 import net.yan100.life.domain.toAggregateChangeId
 import net.yan100.life.infrastructure.jimmer.entities.*
 import net.yan100.life.infrastructure.jimmer.toAggregateRootResultId
@@ -39,45 +43,38 @@ class PostContentRepositoryImpl(
 
   override suspend fun findByStatus(
     status: PostContentStatus,
-    page: Int,
-    size: Int,
-  ): List<PostContentAggregate> = withContext(Dispatchers.IO) {
+    pq: Pq
+  ): Pr<PostContentAggregate> = withContext(Dispatchers.IO) {
     sqlClient
       .createQuery(PostContent::class) {
         where(table.status eq status)
         orderBy(table.crd.desc())
         select(table)
       }
-      .limit(size, (page * size).toLong())
-      .execute()
-      .map { it.toAggregate() }
+      .fetchPq(pq) { it.toAggregate() }
   }
 
   override suspend fun findByUserAndStatus(
     userId: RefId,
     status: PostContentStatus?,
-    page: Int,
-    size: Int,
-  ): List<PostContentAggregate> = withContext(Dispatchers.IO) {
+    pq: Pq
+  ): Pr<PostContentAggregate> = withContext(Dispatchers.IO) {
     sqlClient
       .createQuery(PostContent::class) {
         where(table.pubUserAccountId eq userId)
-        status?.let {
+        status?.also {
           where(table.status eq it)
         }
         orderBy(table.crd.desc())
         select(table)
       }
-      .limit(size, (page * size).toLong())
-      .execute()
-      .map { it.toAggregate() }
+      .fetchPq(pq) { it.toAggregate() }
   }
 
   override suspend fun findByType(
     type: PostMessageType,
-    page: Int,
-    size: Int,
-  ): List<PostContentAggregate> = withContext(Dispatchers.IO) {
+    pq: Pq
+  ): Pr<PostContentAggregate> = withContext(Dispatchers.IO) {
     sqlClient
       .createQuery(PostContent::class) {
         where(table.type eq type)
@@ -85,9 +82,7 @@ class PostContentRepositoryImpl(
         orderBy(table.crd.desc())
         select(table)
       }
-      .limit(size, (page * size).toLong())
-      .execute()
-      .map { it.toAggregate() }
+      .fetchPq(pq) { it.toAggregate() }
   }
 
   override suspend fun countByStatus(status: PostContentStatus): Long = withContext(Dispatchers.IO) {
@@ -121,4 +116,4 @@ class PostContentRepositoryImpl(
       status = this@toEntity.status
     }
   }
-} 
+}
