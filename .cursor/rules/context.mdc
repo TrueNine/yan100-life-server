@@ -4,5 +4,6 @@ globs:
 alwaysApply: true
 ---
 
+- 当前项目为多模块项目，统一包在 `net.yan100.life` 之下
 - 应当尽可能复用现有项目已有代码，避免重复造轮子
 - 积极使用 MCP context7 工具查阅最新文档
