@@ -49,3 +49,8 @@ log.trace("[changeName] changed name and age name: {} , age: {}", name, age)
 ```
 - 记录消息应当使用 `{}` 占位符
 - 日志信息必须使用英文书写
+
+restful 规则：
+- 完全遵循 restful 规范
+- 全部采用 蛇形命名法，例如：`user/user_profile`、`{userId}/profile`
+- spring mvc 注解的链接，开头不应该使用 `/` 开头，springmvc 会自动添加 `/`
