@@ -11,6 +11,8 @@ plugins {
 dependencies {
   implementation(projects.application)
   implementation(projects.domain)
+  implementation(projects.shared)
+
   implementation(yan100.org.babyfish.jimmer.jimmer.client)
   implementation(yan100.net.yan100.compose.shared)
   implementation(yan100.org.springframework.boot.spring.boot.starter.web)
@@ -18,7 +20,7 @@ dependencies {
 
   runtimeOnly(yan100.org.springframework.data.spring.data.commons)
   runtimeOnly(yan100.org.springframework.spring.jdbc)
-  implementation(projects.infrastructure.jimmer)
+  runtimeOnly(projects.infrastructure.infrastructureJimmer)
 
   ksp(yan100.org.babyfish.jimmer.jimmer.ksp)
 

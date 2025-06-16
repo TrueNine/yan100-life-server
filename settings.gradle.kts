@@ -46,4 +46,7 @@ dependencyResolutionManagement {
   }
 }
 
-include("application", ":infrastructure:jimmer", "shared", "domain", "rest")
+include("application", "shared", "domain", "rest")
+
+include("infrastructure:jimmer")
+findProject(":infrastructure:jimmer")?.name = "infrastructure-jimmer"

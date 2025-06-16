@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
   ksp(yan100.org.babyfish.jimmer.jimmer.ksp)
-  implementation(projects.infrastructure.jimmer)
+  implementation(projects.infrastructure.infrastructureJimmer)
   implementation(projects.domain)
 
   implementation(yan100.net.yan100.compose.rds.shared)
