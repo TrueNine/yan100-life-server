@@ -10,12 +10,17 @@ import org.springframework.test.web.servlet.get
 
 @SpringBootTest(classes = [TestEntrance::class])
 @AutoConfigureMockMvc
-class JimmerClientApiTest @Inject constructor(
+class JimmerClientApiIntegrationTest @Inject constructor(
   private val mockMvc: MockMvc,
 ) : IDatabasePostgresqlContainer {
+
   @Test
   fun testTsZipShouldReturn200() {
     mockMvc.get("/ts.zip")
-      .andExpect { status { isOk() } }
+      .andExpect {
+        status {
+          isOk()
+        }
+      }v
   }
 } 
