@@ -4,7 +4,22 @@ globs:
 alwaysApply: true
 ---
 
+
+- 采用测试驱动开发，应积极编写单元测试
+- 采用领域驱动设计，应严格遵循领域驱动设计六边形架构
+- 应严格遵循 CQRS + 事件驱动架构
 - 代码嵌套层级不宜深入，应积极使用 `early return` 技巧， 提前结束来避免嵌套。
+- 禁止通过依赖版本降级来试图解决问题，用户只使用最新依赖
+- 禁止在构建系统当中引入新依赖，只有建议权
+
+技术栈：
+- jdk 24+
+- kotlin 2.2+
+- spring boot 3.5+
+- jimmer 0.9.93+
+- gradle 8.14+
+- junit 5.13+
+- mockk
 
 kotlin 代码优化：
 - 无需值使，应当使用 `also {}` 而非 `let {}`
@@ -34,4 +49,3 @@ log.trace("[changeName] changed name and age name: {} , age: {}", name, age)
 ```
 - 记录消息应当使用 `{}` 占位符
 - 日志信息必须使用英文书写
-

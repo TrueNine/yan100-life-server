@@ -4,5 +4,9 @@ globs:
 alwaysApply: false
 ---
 
-- 测试覆盖率必须100%
+- 必须保证100%的测试覆盖率
 - 测试与源文件同名+Test后缀
+- 禁止使用 `mockito`，如需 mock 也应当选择 `mockk`
+- spring mockMvc 编写时应当使用 kotlin 扩展，而非 java 形式语法，以提高测试代码简洁度
+- 每个被测试函数，应当使用分组测试
+- 应当使用参数化测试来优化测试代码，保持代码简洁
