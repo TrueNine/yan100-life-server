@@ -18,9 +18,7 @@ class CreateUserAccountCommandHandler(
 
   override suspend fun handle(command: CreateUserAccountCommand): AggregateId.Result {
     // 检查账号是否已存在
-    require(!userRepository.existsByAccount(command.account)) {
-      "账号 ${command.account} 已存在"
-    }
+    require(!userRepository.existsByAccount(command.account)) { "账号 ${command.account} 已存在" }
 
     // 检查手机号是否已存在
     command.phone?.let {
@@ -41,7 +39,7 @@ class CreateUserAccountCommandHandler(
     val savedUser = userRepository.save(user)
 
     // 发布领域事件
-    eventPublisher.publishAll(savedUser.domainEvents)
+    eventPublisher.publishAllByAggregateRoot(savedUser)
     savedUser.clearEvents()
 
     return savedUser.id.toResultId()
@@ -65,7 +63,7 @@ class UpdateUserProfileCommandHandler(
     )
 
     userRepository.save(user)
-    eventPublisher.publishAll(user.domainEvents)
+    eventPublisher.publishAllByAggregateRoot(user)
     user.clearEvents()
   }
 }
