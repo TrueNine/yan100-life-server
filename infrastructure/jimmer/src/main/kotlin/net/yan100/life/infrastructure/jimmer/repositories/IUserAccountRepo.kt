@@ -9,5 +9,9 @@ import org.springframework.stereotype.Repository
 @Primary
 @Repository
 interface IUserAccountRepo : IRepo<UserAccount, RefId> {
-
+  fun findByAccount(account: String): UserAccount?
+  fun findByPhone(phone: String): UserAccount?
+  fun findByWechatWxpaOpenId(wechatWxpaOpenId: String): UserAccount?
+  fun existsByAccount(account: String): Boolean
+  fun existsByPhone(phone: String): Boolean
 }
