@@ -29,3 +29,7 @@ dependencies {
 
   testImplementation(yan100.net.yan100.compose.testtoolkit)
 }
+
+tasks.withType<Test> {
+  useJUnitPlatform()
+}
