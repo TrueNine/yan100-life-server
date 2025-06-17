@@ -54,7 +54,6 @@ class UserAccountRepositoryImpl(
     userRepo.existsByPhone(phone)
   }
 
-  // 转换扩展函数
   private fun UserAccount.toAggregate(): UserAccountAggregate {
     return UserAccountAggregate(
       id = id.toAggregateChangeId(),
