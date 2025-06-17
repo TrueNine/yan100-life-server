@@ -54,4 +54,22 @@ data class PostContentRejectedEvent(
  */
 data class PostContentRemovedEvent(
   override val aggregateId: AggregateId.Change,
+) : DomainEvent(aggregateId = aggregateId)
+
+/**
+ * 消息发送事件
+ */
+data class MessageSentEvent(
+  override val aggregateId: AggregateId.Create,
+  val fromUserId: AggregateId,
+  val toUserId: AggregateId,
+  val postId: AggregateId,
+  val content: String,
+) : DomainEvent(aggregateId = aggregateId)
+
+/**
+ * 消息已读事件
+ */
+data class MessageReadEvent(
+  override val aggregateId: AggregateId.Change,
 ) : DomainEvent(aggregateId = aggregateId) 
