@@ -1,0 +1,3 @@
+spring:
+  test:
+    print-condition-evaluation-report: false
