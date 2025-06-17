@@ -25,7 +25,7 @@ class UserAccountAggregate(
       nickName: String,
       phone: String? = null,
     ): UserAccountAggregate {
-      val userId = AggregateId.Create.Default()
+      val userId = AggregateId.create()
       val user = UserAccountAggregate(
         id = userId,
         account = account,
@@ -33,7 +33,6 @@ class UserAccountAggregate(
         nickName = nickName,
         phone = phone
       )
-      user.active(userId.toChangeId())
       user.raiseEvent(UserAccountCreatedEvent(userId, account, nickName))
       user.raiseEvent(UserPermissionInitializedEvent(userId))
       return user
@@ -84,4 +83,4 @@ class UserAccountAggregate(
   fun getFavoritePostIds(): Set<AggregateId> = checkActivatedOrThrow {
     favoritePostContentIds.toSet()
   }
-} 
+}
