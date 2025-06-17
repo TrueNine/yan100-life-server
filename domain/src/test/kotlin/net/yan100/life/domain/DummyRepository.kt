@@ -10,5 +10,8 @@ class DummyRepository : IDomainRepository<DummyAggregateRoot> {
   override suspend fun findById(id: AggregateId.Query): DummyAggregateRoot? {
     return saved?.takeIf { it.id == id }
   }
-}
 
+  override suspend fun existsById(id: AggregateId.Query): Boolean {
+    return saved?.takeIf { it.id == id } != null
+  }
+}
