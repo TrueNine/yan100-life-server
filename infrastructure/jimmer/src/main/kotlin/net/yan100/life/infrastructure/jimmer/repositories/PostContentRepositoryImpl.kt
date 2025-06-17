@@ -25,7 +25,11 @@ import org.springframework.stereotype.Repository
 @Repository
 class PostContentRepositoryImpl(
   private val sqlClient: KSqlClient,
+  private val postRepo: IPostContentRepo,
 ) : PostContentRepository {
+  override suspend fun existsById(id: AggregateId.Query): Boolean {
+    return postRepo.existsById(id.id)
+  }
 
   override suspend fun findById(id: AggregateId.Query): PostContentAggregate? = withContext(Dispatchers.IO) {
     sqlClient

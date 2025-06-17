@@ -9,48 +9,33 @@ import net.yan100.life.domain.user.UserAccountRepository
 import net.yan100.life.infrastructure.jimmer.entities.*
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
 class UserAccountRepositoryImpl(
   private val sqlClient: KSqlClient,
+  private val userRepo: IUserAccountRepo,
 ) : UserAccountRepository {
 
+  override suspend fun existsById(id: AggregateId.Query): Boolean {
+    return userRepo.existsById(id.id)
+  }
+
   override suspend fun findById(id: AggregateId.Query): UserAccountAggregate? {
-    return sqlClient
-      .findById(UserAccount::class, id.id)
-      ?.toAggregate()
+    return userRepo.findByIdOrNull(id.id)?.toAggregate()
   }
 
   override suspend fun findByAccount(account: String): UserAccountAggregate? = withContext(Dispatchers.IO) {
-    sqlClient
-      .createQuery(UserAccount::class) {
-        where(table.account eq account)
-        select(table)
-      }
-      .fetchOneOrNull()
-      ?.toAggregate()
+    userRepo.findByAccount(account)?.toAggregate()
   }
 
   override suspend fun findByPhone(phone: String): UserAccountAggregate? = withContext(Dispatchers.IO) {
-    sqlClient
-      .createQuery(UserAccount::class) {
-        where(table.phone eq phone)
-        select(table)
-      }
-      .fetchOneOrNull()
-      ?.toAggregate()
+    userRepo.findByPhone(phone)?.toAggregate()
   }
 
   override suspend fun findByWechatOpenId(openId: String): UserAccountAggregate? = withContext(Dispatchers.IO) {
-    sqlClient
-      .createQuery(UserAccount::class) {
-        where(table.wechatWxpaOpenId eq openId)
-        select(table)
-      }
-      .fetchOneOrNull()
-      ?.toAggregate()
+    userRepo.findByWechatWxpaOpenId(openId)?.toAggregate()
   }
 
   override suspend fun save(aggregate: UserAccountAggregate): UserAccountAggregate = withContext(Dispatchers.IO) {
@@ -62,21 +47,11 @@ class UserAccountRepositoryImpl(
   }
 
   override suspend fun existsByAccount(account: String): Boolean = withContext(Dispatchers.IO) {
-    sqlClient
-      .createQuery(UserAccount::class) {
-        where(table.account eq account)
-        select(table.id)
-      }
-      .fetchOneOrNull() != null
+    userRepo.existsByAccount(account)
   }
 
   override suspend fun existsByPhone(phone: String): Boolean = withContext(Dispatchers.IO) {
-    sqlClient
-      .createQuery(UserAccount::class) {
-        where(table.phone eq phone)
-        select(table.id)
-      }
-      .fetchOneOrNull() != null
+    userRepo.existsByPhone(phone)
   }
 
   // 转换扩展函数
