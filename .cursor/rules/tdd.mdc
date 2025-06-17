@@ -16,6 +16,11 @@ alwaysApply: false
 - 禁止使用 junit5 当中的 `Assertions.xxx` 断言函数，应当更具有kotlin风味
 - 应当使用 `kotlin.test` 库 当中的断言函数
 
+单元测试分组规则：
+- 以方法、变量、被测试功能进行分组
+- 分组 `inner class` 类名与被测试对象同名但使用大驼峰命名法
+- 分组内包含相应的功能测试方法
+
 ## 测试代码分组格式示例
 
 ```kotlin
