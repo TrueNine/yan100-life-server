@@ -4,6 +4,7 @@ plugins {
   alias(yan100.plugins.org.jetbrains.kotlin.kapt)
   alias(yan100.plugins.org.jetbrains.kotlin.plugin.spring)
   `repositories-conventions`
+  `jacoco-convention`
 }
 
 dependencies {
@@ -28,8 +29,4 @@ dependencies {
   implementation(yan100.org.slf4j.slf4j.api)
 
   testImplementation(yan100.net.yan100.compose.testtoolkit)
-}
-
-tasks.withType<Test> {
-  useJUnitPlatform()
 }
