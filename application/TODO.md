@@ -1,0 +1,4 @@
+- 实现全部的 command
+- 联调 jimmer and application
+- 联调 rest 层
+- 重新定位 shared 模块的问题
