@@ -16,7 +16,6 @@ interface UserAccount : IEntity {
    */
   val avatarUrl: String?
 
-
   /**
    * 微信公众号OpenId
    */
@@ -28,9 +27,15 @@ interface UserAccount : IEntity {
 
   val nickName: String
 
+  /**
+   * 用户收藏
+   */
   @ManyToMany
   val favoritePostContents: List<PostContent>
 
+  /**
+   * 角色组
+   */
   @ManyToMany
   val roleGroups: List<RoleGroup>
 }

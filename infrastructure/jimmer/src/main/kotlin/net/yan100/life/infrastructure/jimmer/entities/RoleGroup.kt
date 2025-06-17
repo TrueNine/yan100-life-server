@@ -11,6 +11,7 @@ interface RoleGroup : IEntity {
     val description: String?
     @ManyToMany
     val roles: List<Role>
+
     @ManyToMany(mappedBy = "roleGroups")
     val userAccounts: List<UserAccount>
 } 
