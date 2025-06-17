@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component
 @Component
 class UserEventHandlers {
 
-  private val log = slf4j<UserEventHandlers>()
+  companion object {
+    @JvmStatic
+    private val log = slf4j<UserEventHandlers>()
+  }
 
   @EventListener
   suspend fun handle(event: UserAccountCreatedEvent) {
