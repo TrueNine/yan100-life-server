@@ -15,7 +15,10 @@ class RoleAggregate(
   private val permissionIds: MutableSet<AggregateId> = mutableSetOf()
 ) : AggregateRoot(id) {
   companion object {
+    @JvmStatic
     fun create(code: String, name: String, description: String? = null): RoleAggregate {
+      require(code.isNotBlank()) { "code must not be blank" }
+      require(name.isNotBlank()) { "name must not be blank" }
       val id = AggregateId.create()
       val role = RoleAggregate(id, code, name, description)
       role.raiseEvent(RoleCreatedEvent(id, code, name))
