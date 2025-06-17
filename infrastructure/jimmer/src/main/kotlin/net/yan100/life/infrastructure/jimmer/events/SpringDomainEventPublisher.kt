@@ -9,12 +9,7 @@ import org.springframework.stereotype.Component
 class SpringDomainEventPublisher(
   private val applicationEventPublisher: ApplicationEventPublisher,
 ) : DomainEventPublisher {
-
   override fun publish(event: DomainEvent) {
     applicationEventPublisher.publishEvent(event)
-  }
-
-  override fun publishAll(events: List<DomainEvent>) {
-    events.forEach { publish(it) }
   }
 } 
