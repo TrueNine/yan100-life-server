@@ -4,6 +4,8 @@ globs:
 alwaysApply: false
 ---
 
+- net.yan100.compose 包下的所有均为 外部 sdk
+
 ## RefId
 它是一个 kotlin 的别名，通常用以指代数据库的 Id 类型，方便在sdk方强制用户使用统一的 Id 类型
 在数据库相关函数中应当优先使用它，而非特定类型，提升可移植性。
@@ -58,4 +60,25 @@ object ExampleObject {
   val log = slf4j<ExampleObject>()
 }
 ```
+## Pq and Pr
 
+- pq 是 IPageQueryParam 的别名
+- pr 是 IPageResult 的别名
+
+### 创建示例
+```kotlin
+import net.yan100.compose.Pq
+import net.yan100.compose.Pr
+
+// pageParam
+val pq = Pq[1, 10] // offset, pageSize
+pq.s // pageSize
+pq.o // offset
+
+// pr 一般无需创建
+val pr = Pr[1, 10, 100] // dataList, total, totalPageNumber
+val pr = Pr[listOf(1,2,3,...), 10, Pq[1, 10]] // dataList, total, pageQueryParam
+pr.d // dataList
+pr.o // offset
+pr.t // total
+```
