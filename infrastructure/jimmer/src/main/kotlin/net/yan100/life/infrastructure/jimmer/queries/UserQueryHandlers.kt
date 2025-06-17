@@ -3,6 +3,7 @@ package net.yan100.life.infrastructure.jimmer.queries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.yan100.compose.Pr
+import net.yan100.compose.rds.entities.crd
 import net.yan100.compose.rds.fetchPq
 import net.yan100.life.application.QueryHandler
 import net.yan100.life.application.dto.UserDetailDto
@@ -11,21 +12,21 @@ import net.yan100.life.application.user.queries.GetUserByAccountQuery
 import net.yan100.life.application.user.queries.GetUserDetailQuery
 import net.yan100.life.application.user.queries.SearchUsersQuery
 import net.yan100.life.infrastructure.jimmer.entities.*
+import net.yan100.life.infrastructure.jimmer.repositories.IUserAccountRepo
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.*
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class GetUserDetailQueryHandler(
   private val sqlClient: KSqlClient,
+  private val userRepo: IUserAccountRepo,
 ) : QueryHandler<GetUserDetailQuery, UserDetailDto?> {
 
   override suspend fun handle(query: GetUserDetailQuery): UserDetailDto? = withContext(Dispatchers.IO) {
-    sqlClient
-      .findById(
-        UserAccount::class,
-        query.userId
-      )
+    userRepo
+      .findByIdOrNull(query.userId)
       ?.toUserDetailDto()
   }
 
@@ -44,17 +45,11 @@ class GetUserDetailQueryHandler(
 
 @Service
 class GetUserByAccountQueryHandler(
-  private val sqlClient: KSqlClient,
+  private val userRepo: IUserAccountRepo,
 ) : QueryHandler<GetUserByAccountQuery, UserView?> {
 
   override suspend fun handle(query: GetUserByAccountQuery): UserView? = withContext(Dispatchers.IO) {
-    sqlClient
-      .createQuery(UserAccount::class) {
-        where(table.account eq query.account)
-        select(table)
-      }
-      .fetchOneOrNull()
-      ?.toUserDto()
+    userRepo.findByAccount(query.account)?.toUserDto()
   }
 
   private fun UserAccount.toUserDto(): UserView {
