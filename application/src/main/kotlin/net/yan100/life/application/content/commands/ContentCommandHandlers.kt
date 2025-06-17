@@ -4,6 +4,8 @@ import net.yan100.life.application.CommandHandler
 import net.yan100.life.application.CommandHandlerWithResult
 import net.yan100.life.domain.content.PostContentAggregate
 import net.yan100.life.domain.content.PostContentRepository
+import net.yan100.life.domain.content.MessageAggregate
+import net.yan100.life.domain.content.MessageRepository
 import net.yan100.life.domain.AggregateId
 import net.yan100.life.domain.DomainEventPublisher
 import org.springframework.stereotype.Service
@@ -134,5 +136,38 @@ class RemovePostCommandHandler(
     postRepository.save(post)
     eventPublisher.publishAll(post.domainEvents)
     post.clearEvents()
+  }
+}
+
+@Service
+class SendMessageCommandHandler(
+  private val messageRepository: MessageRepository,
+  private val postRepository: PostContentRepository,
+  private val eventPublisher: DomainEventPublisher,
+) : CommandHandlerWithResult<SendMessageCommand, AggregateId> {
+
+  override suspend fun handle(command: SendMessageCommand): AggregateId.Result {
+    // 验证帖子是否存在
+    val post = postRepository.findById(command.postId.toQueryId())
+      ?: error("帖子不存在: ${command.postId}")
+
+    // 验证帖子是否已发布
+    require(post.isPublished()) {
+      "只能对已发布的帖子发送消息"
+    }
+
+    // 创建消息
+    val message = MessageAggregate.create(
+      fromUserId = command.fromUserId,
+      toUserId = command.toUserId,
+      postId = command.postId,
+      content = command.content
+    )
+
+    val savedMessage = messageRepository.save(message)
+    eventPublisher.publishAll(savedMessage.domainEvents)
+    savedMessage.clearEvents()
+
+    return savedMessage.id.toResultId()
   }
 } 
