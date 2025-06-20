@@ -42,7 +42,7 @@ dependencyResolutionManagement {
     }
   }
   versionCatalogs {
-    create("yan100") { from("net.yan100.compose:version-catalog:3.1.1") }
+    create("yan100") { from("net.yan100.compose:version-catalog:3.1.4") }
   }
 }
 
